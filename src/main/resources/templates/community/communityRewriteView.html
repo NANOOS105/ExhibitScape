@@ -11,84 +11,56 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gasoek+One&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100..900&family=Yeon+Sung&display=swap" rel="stylesheet">
 </head>
-<body>
-<div layout:fragment="content">
-		<div class="category-image"></div>
-	<div class="write-form">
-		<form th:action="@{/exhibitscape/community/communityReWrite/{comId}(comId=${comDTO.comId})}" method="post" enctype="multipart/form-data">
-			<div class="form-group">
-				<label for="comCategory">카테고리</label> 
-				<select id="comCategory" name="comCategory"  required>
-					  <option value="">카테고리 선택</option>
-					  <option value="전시 소식" th:selected="${comDTO.comCategory == '전시 소식'}">전시 소식</option>
-					  <option value="전시장 주변 정보" th:selected="${comDTO.comCategory == '전시장 주변 정보'}">전시장 주변 정보</option>
-					  <option value="전시 질문" th:selected="${comDTO.comCategory == '전시 질문'}">전시 질문</option>
-					  <option value="기타" th:selected="${comDTO.comCategory == '기타'}">기타</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="comTitle">글제목</label> 
-				<input type="text" id="comTitle" name="comTitle" th:value="${comDTO.comTitle}" required>
-			</div>
-			<div class="item-image" th:if="${comDTO.comImgSname != null and comDTO.comImgSname != ''}">
-				<img th:src="@{/comFile/{comImgPath}/{comImgSname}(comImgPath=${comDTO.comImgPath}, comImgSname=${comDTO.comImgSname})}" alt="Community Image">
-			</div>
-			<div class="form-group">
-				<label for="comContent">글내용</label>
-				<textarea id="comContent" name="comContent" rows="20" th:text="${comDTO.comContent}" required></textarea>
-			</div>
-				<div><img class="preview" id="preview"/></div>
-			<div class="img-update-btn">
-				<!-- 수정 전 첨부파일 이름 hidden으로 보내주기 -->
-				<input type="hidden" name="comImgSname" th:value="${comDTO.comImgSname}">
-				<input type="hidden" name="comImgPath" th:value="${comDTO.comImgPath}">
-				<input type="hidden" name="memberId" th:value="${comDTO.memberId}">
-				<input type="hidden" name="placeLat" th:value="${comDTO.placeLat}">
-				<input type="hidden" name="placeLong" th:value="${comDTO.placeLong}">
-				<input type="hidden" name="placeName" th:value="${comDTO.placeName}">
-    			<input type="file" id="comFile" name="comFile" multiple="multiple" accept="image/*" style="display: none;" onchange="readURL(this)"/>
-   				<label for="comFile" class="file-label">사진 수정</label>
-   				<button type="button" id="deleteFile" class="file-label" th:if="${comDTO.comImgSname != null and comDTO.comImgSname != ''}">사진 삭제</button>
-				<span id="fileName" th:data-original-name="${comDTO.comImgSname}" th:text="${comDTO.comImgSname != null and comDTO.comImgSname != ''} ? '현재 파일명 : ' + ${comDTO.comImgSname} : '첨부파일 없음'"></span>			</div>
-			<div class="button-group">
-				<div class="submit-group">
-					<input type="submit" value="수정">
-				</div>
-				<div class="submit-group">
-				    <a th:href="@{/exhibitscape/community/communityList}" class="cancel-btn">취소</a>
-				</div>
-			</div>
-		</form>
-	</div>
-	
-	
-<script>
-
-	  document.getElementById('deleteFile').addEventListener('click', function() {
-	  document.querySelector('input[name="comImgSname"]').value = '';
-	  document.getElementById('fileName').textContent = '첨부파일 없음';
-	});
-    
-	  function readURL(input) {
-		  if (input.files && input.files[0]) {
-		    var reader = new FileReader();
-		    reader.onload = function(e) {
-		      document.getElementById('preview').src = e.target.result;
-		      document.getElementById('fileName').textContent = '현재 파일명 : ' + input.files[0].name;
-		      document.getElementById('fileName').dataset.originalName = input.files[0].name;
-		    };
-		    reader.readAsDataURL(input.files[0]);
-		  } else {
-		    var originalName = document.getElementById('fileName').dataset.originalName;
-		    if (originalName) {
-		      document.getElementById('fileName').textContent = '현재 파일명 : ' + originalName;
-		    } else {
-		      document.getElementById('fileName').textContent = '첨부파일 없음';
-		    }
-		    document.getElementById('preview').src = "";
-		  }
-		}
-</script>		
-</div>
-</body>
+	<body>
+		<div layout:fragment="content">
+				<div class="category-image"></div>
+			<div class="write-form">
+				<form th:action="@{/exhibitscape/community/communityReWrite/{comId}(comId=${comDTO.comId})}" method="post" enctype="multipart/form-data">
+					<div class="form-group">
+						<label for="comCategory">카테고리</label> 
+						<select id="comCategory" name="comCategory"  required>
+							<option value="">카테고리 선택</option>
+							<option value="전시 소식" th:selected="${comDTO.comCategory == '전시 소식'}">전시 소식</option>
+							<option value="전시장 주변 정보" th:selected="${comDTO.comCategory == '전시장 주변 정보'}">전시장 주변 정보</option>
+							<option value="전시 질문" th:selected="${comDTO.comCategory == '전시 질문'}">전시 질문</option>
+							<option value="기타" th:selected="${comDTO.comCategory == '기타'}">기타</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="comTitle">글제목</label> 
+						<input type="text" id="comTitle" name="comTitle" th:value="${comDTO.comTitle}" required>
+					</div>
+					<div class="item-image" th:if="${comDTO.comImgSname != null and comDTO.comImgSname != ''}">
+						<img th:src="@{/comFile/{comImgPath}/{comImgSname}(comImgPath=${comDTO.comImgPath}, comImgSname=${comDTO.comImgSname})}" alt="Community Image">
+					</div>
+					<div class="form-group">
+						<label for="comContent">글내용</label>
+						<textarea id="comContent" name="comContent" rows="20" th:text="${comDTO.comContent}" required></textarea>
+					</div>
+						<div><img class="preview" id="preview"/></div>
+					<div class="img-update-btn">
+						<!-- 수정 전 첨부파일 이름 hidden으로 보내주기 -->
+						<input type="hidden" name="comImgSname" th:value="${comDTO.comImgSname}">
+						<input type="hidden" name="comImgPath" th:value="${comDTO.comImgPath}">
+						<input type="hidden" name="memberId" th:value="${comDTO.memberId}">
+						<input type="hidden" name="placeLat" th:value="${comDTO.placeLat}">
+						<input type="hidden" name="placeLong" th:value="${comDTO.placeLong}">
+						<input type="hidden" name="placeName" th:value="${comDTO.placeName}">
+						<input type="file" id="comFile" name="comFile" multiple="multiple" accept="image/*" style="display: none;" onchange="readURL(this)"/>
+						<label for="comFile" class="file-label">사진 수정</label>
+						<button type="button" id="deleteFile" class="file-label" th:if="${comDTO.comImgSname != null and comDTO.comImgSname != ''}">사진 삭제</button>
+						<span id="fileName" th:data-original-name="${comDTO.comImgSname}" th:text="${comDTO.comImgSname != null and comDTO.comImgSname != ''} ? '현재 파일명 : ' + ${comDTO.comImgSname} : '첨부파일 없음'"></span>			</div>
+					<div class="button-group">
+						<div class="submit-group">
+							<input type="submit" value="수정">
+						</div>
+						<div class="submit-group">
+							<a th:href="@{/exhibitscape/community/communityList}" class="cancel-btn">취소</a>
+						</div>
+					</div>
+				</form>
+			</div>		
+		</div>
+		<script src="/js/community/communityRewriteView.js"></script>
+	</body>
 </html>
